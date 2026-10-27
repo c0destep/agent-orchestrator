@@ -1,0 +1,21 @@
+name: Validate
+on:
+  push:
+  pull_request:
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python tests/validate.py
+      - run: bash install.sh --project . --dry-run
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify Windows configuration
+        shell: pwsh
+        run: ./tests/validate-windows.ps1

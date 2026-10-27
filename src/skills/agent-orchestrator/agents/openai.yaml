@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Orchestrator"
+  short_description: "Orchestrate specialist Codex subagents"
+  default_prompt: "Use $agent-orchestrator to route this request by risk, complexity and quality."
