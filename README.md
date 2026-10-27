@@ -2,7 +2,7 @@
 
 **Skill de orquestração de subagentes para Codex**. Escolhe especialistas conforme a natureza da tarefa, complexidade, incerteza e risco, com **modelos e esforços predefinidos** para cada função. A prioridade é qualidade e eficiência, sem criar agentes no modo de velocidade.
 
-**Versão:** `1.2.0` · **16 configurações** · **Modelos:** GPT-6 Luna, GPT-6.1 Sol e GPT-6.1 Terra · **Licença:** MIT
+**Versão:** `1.3.0` · **16 configurações** · **Modelos:** GPT-6 Luna, GPT-6.1 Sol e GPT-6.1 Terra · **Licença:** MIT
 
 > **Importante:** instalar os arquivos não garante que todos os modelos estejam disponíveis na sua conta/cliente Codex. A Skill tem política de fallback e não finge que um agente foi executado quando não foi.
 
@@ -65,6 +65,27 @@ model_reasoning_effort = "medium"
 ```
 
 Veja [a matriz e escalonamento](src/skills/agent-orchestrator/references/model-routing.md) para critérios completos.
+
+## Acompanhar agentes no Codex CLI (v1.3)
+
+Ao usar `$agent-orchestrator`, o agente principal é instruído a informar **agente, modelo configurado, esforço configurado e status** na conversa, quando o cliente permitir mensagens de progresso. Isso **não altera o painel nativo `/agents`** nem garante que a saída apareça em tempo real em todas as versões do CLI.
+
+Exemplo ilustrativo após uma criação confirmada:
+
+```text
+[orchestrator] START | reviewer | configured: gpt-6.1-sol / high | effective: unverified | task: review authentication diff
+[orchestrator] DONE  | reviewer | configured: gpt-6.1-sol / high | effective: unverified | result: review finished
+```
+
+No encerramento, a Skill apresenta uma tabela com os agentes selecionados, modelo/esforço *configurados*, confirmação do runtime quando disponível e resultado. Se não houver delegação, informa a execução direta. Se o Codex não mostrar avisos intermediários, a tabela final funciona como alternativa.
+
+**Configurado não significa efetivamente executado:** os valores vêm dos arquivos TOML e não comprovam qual modelo foi servido pelo backend. A Skill marca `unverified` quando não existe metadata confiável; mudança de agente ou fallback deve ser declarada. Nenhum status deve ser inventado. Para o protocolo completo, consulte [observability.md](src/skills/agent-orchestrator/references/observability.md).
+
+Para testar no Codex:
+
+```text
+$agent-orchestrator Analise este projeto usando especialistas somente se necessário. Informe na conversa cada subagente iniciado, seu modelo e esforço configurados; mostre status e um resumo ao final.
+```
 
 ## Requisitos
 
